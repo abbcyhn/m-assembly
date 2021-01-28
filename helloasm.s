@@ -11,7 +11,7 @@
 # VARIABLES:
 # %eax holds the system call number
 # %ebx holds the return status
-#
+
 
 .section .data
 
@@ -29,3 +29,4 @@ movl $25, %ebx      # this is the
 
 int $0x80           # this wakes up the kernel to run
                     # the exit command
+                    
