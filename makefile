@@ -1,13 +1,15 @@
-FN := find_max_val # make FN = 
+SRC := chg_eflag
 
 all:
-	as $(FN).s -o $(FN).o
+	as --32 $(SRC).s -o $(SRC).o
 
-	ld $(FN).o -o $(FN)
+	ld -m elf_i386 $(SRC).o -o $(SRC)
 
 	clear
 
-	#./$(FN) 
+	#gdb $(SRC)
+
+	#./$(SRC) 
 
 	# echo usd?
 
