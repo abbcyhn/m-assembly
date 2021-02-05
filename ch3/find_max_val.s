@@ -25,24 +25,27 @@
             # also, first value in the list is the biggest value
             movl %eax, %ebx
 
-            _loop_start:
-                # it means that if the current value is zero we reached at the of the list
+            _loop:
+                # when we reach at the end of the list, we must break loop
                 cmpl $0, %eax
-                je _loop_end
+                je end
 
-                # in order to read next value from list, we must increment index
+                # increment current index
                 incl %edi
+
+                # read next value from the list
                 movl list(, %edi, 4), %eax
 
-                # compare current value and the biggest value, if current value <= biggest value, then repeat loop
+                # well, if current value (eax) <= minimum value (ebx), then repeat loop
                 cmpl %ebx, %eax
-                jle _loop_start
+                jle _loop
 
-                # so, if current value > biggest value, then biggest value = current value, then repeat loop
+                # otherwise, set current value as minimum value, then repeat loop
                 movl %eax, %ebx
-                jmp _loop_start
+                jmp _loop
 
-            _loop_end:
-            # end of the program
+
+        # end of the program
+        end:
             movl $1, %eax
             int $0x80
