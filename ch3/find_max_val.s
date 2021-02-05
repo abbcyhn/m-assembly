@@ -5,8 +5,8 @@
 #   %eax    -   current value
 #   %ebx    -   maximum value
 
-# NOTES:    0 means end of the list 
-#                   and must be replaced at the end of the list
+# NOTES:    255 means end of the list 
+#                     and must be replaced at the end of the list
 
 .section .data
     list:
@@ -28,6 +28,9 @@
 
                 incl %edi                           # increment current index
                 movl list(, %edi, 4), %eax          # read next value from the list
+
+                cmpl $255, %eax                     # jump end of the program, if current value (%eax=255) 
+                je end
 
                 cmpl %ebx, %eax                     # loop again, if current value (eax) <= maximum value (ebx)
                 jle _loop
