@@ -10,7 +10,7 @@
 
 .section .data
     list:
-        .long 3, 250, 5, 89, 0
+        .long 3, 1, 2, -5, 0
 
 
 .section .text
