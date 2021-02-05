@@ -1,4 +1,4 @@
-SRC := find_max_val.s
+SRC := find_max_val
 
 all:
 	as --32 $(SRC).s -o $(SRC).o
