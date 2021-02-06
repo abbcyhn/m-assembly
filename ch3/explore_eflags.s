@@ -9,7 +9,7 @@
 # 2) if ecx = edx, then
 #       eflags  0x246   [ PF ZF IF ]
 #
-# 3) if eax > ebx, then
+# 3) if ecx > edx, then
 #       eflags  0x202   [ IF ]
 
 
@@ -24,11 +24,9 @@
 
 # CF - when an arithmetic carry or borrow has been generated out of ALU.
 # PF - if the numbers of set bits is odd or even in the binary representation of the result of the last operation.
-# AF - when an arithmetic carry or borrow has been generated out of the four least significant bits, or lower nibble. 
-#      if carry is generated at 5th position then auxilliary flag is SET to 1.
+# AF - if carry is generated at 5th position then auxilliary flag is SET to 1.
 # ZF - it is set to 1, or true, if an arithmetic result is zero, and reset otherwise.
-# SF - for example, in an 8-bit signed number system, -37 will be represented as 1101 1011 in binary (the most significant bit, or sign bit, is 1), 
-#      while +37 will be represented as 0010 0101 (the most significant bit is 0).
+# SF - it is set to 1, or true, if an arithmetic result is negative, and reset otherwise.
 # IF - determines whether or not the CPU will respond to maskable hardware interrupts.
 
 
