@@ -1,5 +1,20 @@
 ## Chapter 4. All About Functions: Use the Concepts
 
+- Create a program which changes values in stack: [stack_chg_values](stack_chg_values.s)
+
+
+- Create **power** function: [f_power.s](f_power.s)
+
+
+- Create **subtract** function: [f_subtract.s](f_subtract.s)
+
+
+- Create recursive **factorial** function: [f_factorial.s](f_factorial.s)
+
+
+- Create recursive **fibonacci** function:
+
+
 - Write a function called **square** which receives one argument and returns the square of that argument.
 
 
