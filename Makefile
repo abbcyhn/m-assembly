@@ -1,4 +1,4 @@
-SRC := chg_eflag
+SRC := ch3/explore_eflags
 
 all:
 	as --32 $(SRC).s -o $(SRC).o
@@ -14,6 +14,6 @@ all:
 	# echo usd?
 
 clean:
-	rm -rf *.o
-	find . -maxdepth 1 -type f -executable -delete
+	find . -type f -name '*.o' -delete
+	find . -type f -executable -delete
 	clear
