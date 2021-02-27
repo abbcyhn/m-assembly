@@ -20,7 +20,7 @@
     .globl _start
         _start:                                     # start of the program
 
-            movl list, %ecx                         # set starting address of the list (for example, 0x000H)
+            movl $list, %ecx                        # set starting address of the list (for example, 0x000H)
 
                                                     # ending address = starting address + 4 * (count - 1)
                                                     # calculate ending address: 
