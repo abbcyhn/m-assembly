@@ -23,7 +23,7 @@ movl $1, %eax       # this is the
                     # linux kernel command number (system call) 
                     # for exiting a program
 
-movl $25, %ebx      # this is the 
+movl $3, %ebx      # this is the 
                     # status number 
                     # we will return to the operating system.
 
