@@ -26,4 +26,4 @@
     - movl $_start, %eax -> This is **Immediate Addressing Mode**: Read "_start" labe address and write to eax register.
 
 
-- How to change %eflags value, manually? (explore_eflags.s)[explore_eflags.s] 
+- How to change %eflags value, manually? [explore_eflags.s](explore_eflags.s) 
