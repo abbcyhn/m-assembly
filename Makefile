@@ -1,4 +1,4 @@
-SRC := ch3/explore_eflags
+SRC := ch4/f_factorial
 
 all:
 	as --32 $(SRC).s -o $(SRC).o
