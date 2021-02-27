@@ -1,5 +1,4 @@
 # 💾 [Programming from the Ground Up](https://www.amazon.com/Programming-Ground-Up-Jonathan-Bartlett/dp/1616100648)
-- by Jonathan Bartlett
 
 ## Table of Contents
 
