@@ -35,10 +35,10 @@
 # NOTES:    The power must be 1 or greater
 #
 # VARIABLES:
-#           %eax        - is used for temporary storage
+#           %eax        - for temporary storage
 #           %ebx        - holds the base number
 #           %ecx        - holds the power
-#           -4(%ebp)    - holds the current result
+#           -4(%ebp)    - for local storage, holds the current result.
 
 .type power, @function
     f_power:
