@@ -2,7 +2,7 @@
 
 
 ### Stack
-- How does stack work?: [stack_explore.s](stack_explore.s)
+- How does stack work: [stack_explore.s](stack_explore.s)
 
 - Create a program which changes values in stack: [stack_chg_values.s](stack_chg_values.s)
 
