@@ -2,10 +2,16 @@ ToDo:
 
 * Functions
     1. Yaddaşın təhlili.
-    3. Rekursiv funksiyaları başa düşmək
-    4. f_power.s-də eax əvəzinə edx işlətsəm nəticə 0 olur. Niyə?
+    2. Create recursive **factorial** function:
+    3. Create recursive **fibonacci** function:
+    4. Write a program that finds length of string using function:
+    5. Write a program that calls maximum with 3 different lists, and returns the result of the last one as the program’s exit status code:
+    6. Explain the problems that would arise without a standard calling convention:
 
 * Others
     1. take note assembly leal data_items
     2. google how work with heap in assembly?
     3. Kernel necə bütün HDD(Ethernet və s.) driverlərini tanıyır?
+
+
+
