@@ -8,25 +8,25 @@
 
 
 ### Fuctions
-    - Create **power** function: [f_power.s](f_power.s)
+- Create **power** function: [f_power.s](f_power.s)
 
 
-    - Create **subtract** function: [f_subtract.s](f_subtract.s)
+- Create **subtract** function: [f_subtract.s](f_subtract.s)
 
 
-    - Create recursive **factorial** function: [f_factorial.s](f_factorial.s)
+- Create recursive **factorial** function: [f_factorial.s](f_factorial.s)
 
 
-    - Create recursive **fibonacci** function:
+- Create recursive **fibonacci** function:
 
 
-    - Write a function called **square** which receives one argument and returns the square of that argument.
+- Write a function called **square** which receives one argument and returns the square of that argument.
 
 
-    - Write a program to test your square function.
+- Write a program to test your square function.
 
 
-    - Convert the maximum program given in the Chapter 3 so that it is a function which takes a pointer to several values and returns their maximum. Write a program that calls maximum with 3 different lists, and returns the result of the last one as the program’s exit status code.
+- Convert the maximum program given in the Chapter 3 so that it is a function which takes a pointer to several values and returns their maximum. Write a program that calls maximum with 3 different lists, and returns the result of the last one as the program’s exit status code.
 
 
-    - Explain the problems that would arise without a standard calling convention.
+- Explain the problems that would arise without a standard calling convention.
