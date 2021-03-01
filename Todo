@@ -8,6 +8,7 @@ ToDo:
     5. Yaddaşın təhlili.
     6. When a function is done executing resets the stack what it was when it was called. How resets? How the function know old stage of stack?
     7. f_power.s-də eax əvəzinə edx işlətsəm nəticə 0 olur. Niyə?
+    8. Rekursiv funksiyaları başa düşmək
 
 * Others
     1. take note assembly leal data_items
