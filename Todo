@@ -1,14 +1,13 @@
 ToDo:
 
 * Functions
-
     1. Əhməd m soruş: Aşağıdakı tapşırıqlar eyni mənaya gəlir?
         * Funksiyalardan istifadə etməklə sətrin uzunluğunu hesablayan proqram tərtib edin.
         * Funksiyalardan istifadə etməklə sətirdə verilmiş simvolların sayını tapan proqram tərtib edin.
-    3. Yaddaşın təhlili.
-    4. Rekursiv funksiyaları başa düşmək
-    5. When a function is done executing resets the stack what it was when it was called. How resets? How the function know old stage of stack?
-    6. f_power.s-də eax əvəzinə edx işlətsəm nəticə 0 olur. Niyə?
+    2. Yaddaşın təhlili.
+    3. Rekursiv funksiyaları başa düşmək
+    4. When a function is done executing resets the stack what it was when it was called. How resets? How the function know old stage of stack?
+    5. f_power.s-də eax əvəzinə edx işlətsəm nəticə 0 olur. Niyə?
 
 * Others
     1. take note assembly leal data_items
