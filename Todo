@@ -5,7 +5,8 @@ ToDo:
     2. Funksiyalardan istifadə etməklə sətirdə verilmiş simvolların sayını tapan proqram tərtib edin.
     3. Funksiyalardan istifadə etməklə tam ədədlər cərgəsində verilmiş ədədin neçə dəfə təkrarlandığını hesablayan proqram tərtib edin.
     4. Funksiyalardan istifadə etməklə cərgənin elementləri cəmini hesablayan proqram tərtib edin.
-    5. When a function is done executing resets the stack what it was when it was called. How resets? How the function know old stage of stack?
+    5. Yaddaşın təhlili.
+    6. When a function is done executing resets the stack what it was when it was called. How resets? How the function know old stage of stack?
 
 
 * Others
