@@ -8,6 +8,8 @@
 
 
 ### Fuctions
+- Create prototype of function: [f_prototype.s](f_prototype.s)
+
 - Create **power** function: [f_power.s](f_power.s)
 
 

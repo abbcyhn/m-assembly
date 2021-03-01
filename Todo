@@ -2,7 +2,7 @@ todo:
 
 1. explore c calling convention
 2. when a function is done executing resets the stack what it was when it was called. how resets? how the function know old stage of stack?
+
 3. google how work with heap in assembly?
-4. take note about how stack works
-5. take note assembly leal data_items
-6. Kernel necə bütün HDD(Ethernet və s.) driverlərini tanıyır?
+4. take note assembly leal data_items
+5. Kernel necə bütün HDD(Ethernet və s.) driverlərini tanıyır?
