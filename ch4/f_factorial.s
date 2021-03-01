@@ -1,67 +1,50 @@
-# PURPOSE - Given a number, this program computes the
-#           factorial. For example, the factorial of
-#           3 is 3 * 2 * 1, or 6. The factorial of
-#           4 is 4 * 3 * 2 * 1, or 24, and so on.
-#
-# NOTE -    This program shows how to call a function recursively.
+# PURPOSE - This program computes factorial of given a number: !number
 
 .section .data
+    number:
+        .long 2
 
 .section .text
     .globl _start
-    .globl factorial            # this is unneeded unless we want to share 
-                                # this function among other programs
+    .globl f_factorial              # this is unneeded unless we want to share this function among other programs
 
     _start:
-        pushl $4                # The factorial takes one argument - the
-                                # number we want a factorial of. So, it
-                                # gets pushed
+        pushl number
+        call f_factorial            # call 1
 
-        call f_factorial        # run the factorial function
-        addl $4, %esp           # Scrubs the parameter that was pushed on the stack
+        movl %eax, %ebx
 
-        movl %eax, %ebx         # factorial returns the answer in %eax, but
-                                # we want it in %ebx to send it as our exit status
-
-    end:                        # end of the program
-        movl $1, %eax           # system call number (sys_exit)
-        int $0x80               # call kernel
+    end:
+        movl $1, %eax
+        int $0x80
 
 
 .type factorial, @function
     f_factorial:
-        pushl %ebp              # standard function stuff - we have to
-                                # restore %ebp to its prior state before
-                                # returning, so we have to push it
+        f_factorial_start:
+            pushl %ebp
+            movl %esp, %ebp
 
-        movl %esp, %ebp         # This is because we don’t want to modify
-                                # the stack pointer, so we use %ebp.
+        f_factorial_body:
+            movl 8(%ebp), %eax      # eax = number
 
-        movl 8(%ebp), %eax      # This moves the first argument to %eax
-                                # 4(%ebp) holds the return address, and
-                                # 8(%ebp) holds the first parameter
+            cmpl $1, %eax           # if number == 1
+            je f_factorial_end      # jump end of function
 
-        cmpl $1, %eax           # If the number is 1, that is our base
-                                # case, and we simply return (1 is
-                                # already in %eax as the return value)
+            decl %eax               # otherwise, decrease the value
+            pushl %eax              # push it for our call to factorial
+            call f_factorial        # call 2. call factorial
 
-        je f_factorial_end    
+            movl 8(%ebp), %ebx      # %eax has the return value, so we
+                                    # reload our parameter into %ebx
 
-        decl %eax               # otherwise, decrease the value
-        pushl %eax              # push it for our call to factorial
-        call f_factorial        # call factorial
+            imull %ebx, %eax        # multiply that by the result of the
+                                    # last call to factorial (in %eax)
+                                    # the answer is stored in %eax, which
+                                    # is good since that’s where return
+                                    # values go.
 
-        movl 8(%ebp), %ebx      # %eax has the return value, so we
-                                # reload our parameter into %ebx
-
-        imull %ebx, %eax        # multiply that by the result of the
-                                # last call to factorial (in %eax)
-                                # the answer is stored in %eax, which
-                                # is good since that’s where return
-                                # values go.
-
-    f_factorial_end:
-        movl %ebp, %esp         # standard function return stuff - we
-        popl %ebp               # have to restore %ebp and %esp to where
-                                # they were before the function started
-        ret
+        f_factorial_end:
+            movl %ebp, %esp
+            popl %ebp
+            ret
