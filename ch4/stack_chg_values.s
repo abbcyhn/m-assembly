@@ -12,7 +12,7 @@
             popl %eax
             popl %ebx
 
-        _end:
+        end:
             movl $1, %eax
             int $0x80
 
