@@ -35,7 +35,7 @@
 - Write a program that finds length of string using function:
 
 
-- Write a program that finds sum of the elements in the given list:
+- Write a program that finds sum of the elements in the given list: [f_sum](f_sum)
 
 
 - Write a program that finds count of duplicate elements in the given list by the number:
