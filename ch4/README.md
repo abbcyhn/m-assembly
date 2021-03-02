@@ -20,12 +20,6 @@
 - Create **subtract** function: [f_subtract.s](f_subtract.s)
 
 
-- Create recursive **factorial** function: [f_factorial.s](f_factorial.s)
-
-
-- Create recursive **fibonacci** function:
-
-
 - Write a function called **square** which receives one argument and returns the square of that argument: [f_square.s](f_square.s)
 
 
@@ -45,6 +39,12 @@
 
 
 - Write a program that calls maximum with 3 different lists, and returns the result of the last one as the program’s exit status code:
+
+
+- Create recursive **factorial** function: [f_factorial.s](f_factorial.s)
+
+
+- Create recursive **fibonacci** function:
 
 
 - Explain the problems that would arise without a standard calling convention:
