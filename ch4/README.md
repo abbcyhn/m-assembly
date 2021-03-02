@@ -29,7 +29,7 @@
 - Convert the maximum program given in the Chapter 3 so that it is a function which takes a pointer to several values and returns their maximum: [f_maximum.s](f_maximum.s) 
 
 
-- Write a program that finds length of string using function:
+- Write a program that finds length of string using function: [f_strlen.s](f_strlen.s)
 
 
 - Write a program that finds sum of the elements in the given list: [f_sum](f_sum)
