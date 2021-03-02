@@ -8,6 +8,9 @@
 
 
 ### Fuctions
+- How does stack work when calling function: [f_explore.s](f_explore.s)
+
+
 - Create prototype of function: [f_prototype.s](f_prototype.s)
 
 
