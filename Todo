@@ -1,8 +1,7 @@
 ToDo:
-    1. Write a program that finds length of string using function.
-    2. Write a program that calls maximum with 3 different lists, and returns the result of the last one as the program’s exit status code.
-    3. Explain the problems that would arise without a standard calling convention.
+    1. Write a program that calls maximum with 3 different lists, and returns the result of the last one as the program’s exit status code.
+    2. Explain the problems that would arise without a standard calling convention.
     
-    4. Create recursive **factorial** function.
-    5. Create recursive **fibonacci** function.
-    6. How work with heap in assembly?
+    1. Create recursive **factorial** function.
+    2. Create recursive **fibonacci** function.
+    3. How work with heap in assembly?
