@@ -38,7 +38,7 @@
 - Write a program that finds count of duplicate elements in the given list by the number: [f_dublicate.s](f_dublicate.s)
 
 
-- Write a program that calls maximum with 3 different lists, and returns the result of the last one as the program’s exit status code:
+- Write a program that calls maximum with 3 different lists, and returns the result of the last one as the program’s exit status code: [f_maximum_3call.s](f_maximum_3call.s)
 
 
 - Create recursive **factorial** function: [f_factorial.s](f_factorial.s)
