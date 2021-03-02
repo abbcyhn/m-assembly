@@ -1,6 +1,5 @@
 ToDo:
-    1. Write a program that calls maximum with 3 different lists, and returns the result of the last one as the program’s exit status code.
-    2. Explain the problems that would arise without a standard calling convention.
+    1. Explain the problems that would arise without a standard calling convention.
     
     1. Create recursive **factorial** function.
     2. Create recursive **fibonacci** function.
