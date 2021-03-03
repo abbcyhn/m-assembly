@@ -44,7 +44,7 @@
 - Create recursive **factorial** function: [f_factorial.s](f_factorial.s)
 
 
-- Create recursive **fibonacci** function:
+- Create recursive **fibonacci** function: [f_fibonacci.s](f_fibonacci.s)
 
 
 - Explain the problems that would arise without a standard calling convention:
