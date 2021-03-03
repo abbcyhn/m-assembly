@@ -2,12 +2,12 @@
 
 .section .data
     number:
-        .long 2
+        .long 4
 
 .section .text
     _start:
         pushl number
-        call f_factorial            # call 1
+        call f_factorial
 
         movl %eax, %ebx
 
@@ -16,6 +16,17 @@
         int $0x80
 
 
+# PURPOSE:  Find factorial of number
+# INPUT:
+#           number - first argument
+#
+# OUTPUT:
+#           !number
+#
+# VARIABLES:
+#           eax - holds current number
+#           ebx - holds current number minus 1
+#
 .type factorial, @function
     f_factorial:
         f_factorial_start:
@@ -30,7 +41,7 @@
 
             decl %eax               # otherwise, decrease the value
             pushl %eax              # push it for our call to factorial
-            call f_factorial        # call 2. call factorial
+            call f_factorial        # call factorial
 
             movl 8(%ebp), %ebx      # %eax has the return value, so we
                                     # reload our parameter into %ebx
