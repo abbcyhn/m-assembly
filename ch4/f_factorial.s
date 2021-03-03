@@ -5,9 +5,6 @@
         .long 2
 
 .section .text
-    .globl _start
-    .globl f_factorial              # this is unneeded unless we want to share this function among other programs
-
     _start:
         pushl number
         call f_factorial            # call 1
