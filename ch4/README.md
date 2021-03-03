@@ -32,7 +32,7 @@
 - Write a program that finds length of string using function: [f_strlen.s](f_strlen.s)
 
 
-- Write a program that finds sum of the elements in the given list: [f_sum](f_sum)
+- Write a program that finds sum of the elements in the given list: [f_sum.s](f_sum.s)
 
 
 - Write a program that finds count of duplicate elements in the given list by the number: [f_dublicate.s](f_dublicate.s)
