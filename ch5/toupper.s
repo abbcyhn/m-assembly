@@ -11,7 +11,9 @@
 #               c) write the memory buffer to output file
 #
 # NOTE: 
-#           Use this command in order to run program: ./toupper toupper.s toupper.uppercase
+#           Use the following command to run program: 
+#               ./toupper toupper.s toupper.uppercase
+#
 
 .section .data
 #    ####### CONSTANTS ########
@@ -139,7 +141,7 @@ pushl $BUFFER_DATA
 # location of buffer
 pushl %eax
 # size of the buffer
-call convert_to_upper
+call f_toupper
 popl %eax
 # get the size back
 addl $4, %esp
@@ -170,83 +172,77 @@ int $LINUX_SYSCALL
 movl $SYS_CLOSE, %eax
 movl ST_FD_IN(%ebp), %ebx
 int $LINUX_SYSCALL
+
 # ###EXIT###
 movl $SYS_EXIT, %eax
 movl $0, %ebx
 int $LINUX_SYSCALL
 
 
+
+
 # PURPOSE:  This function actually does the
 #           conversion to upper case for a block
 #
 # INPUT:
-# The first parameter is the location
-# of the block of memory to convert
-# The second parameter is the length of that buffer
-#
+#           I parameter  - is the location of the block of memory to convert
+#           II parameter - is the length of that buffer
 #
 # OUTPUT:
-# This function overwrites the current
-# buffer with the upper-casified version.
-#
+#           This function overwrites the current
+#           buffer with the upper-casified version.
 #
 # VARIABLES:
-# %eax - beginning of buffer
-# %ebx - length of buffer
-# %edi - current buffer offset
-# %cl - current byte being examined (first part of %ecx)
+#           %eax - beginning of buffer
+#           %ebx - length of buffer
+#           %edi - current buffer offset
+#           %cl - current byte being examined (first part of %ecx)
+#
+# CONSTANTS
+.equ LOWERCASE_A, 'a'                           # The lower boundary of our search
+.equ LOWERCASE_Z, 'z'                           # The upper boundary of our search
+.equ UPPER_CONVERSION, 'A' - 'a'                # Conversion between upper and lower case
+#
+# STACK STUFF
+.equ ST_BUFFER_LEN, 8                           # Length of buffer
+.equ ST_BUFFER, 12                              # actual buffer
 
-# ###CONSTANTS##
-# The lower boundary of our search
-.equ LOWERCASE_A, 'a'
-# The upper boundary of our search
-.equ LOWERCASE_Z, 'z'
-# Conversion between upper and lower case
-.equ UPPER_CONVERSION, 'A' - 'a'
+.type f_toupper, @function
+f_toupper:
+    f_toupper_start:
+        pushl %ebp
+        movl %esp, %ebp
 
-# ###STACK STUFF###
-.equ ST_BUFFER_LEN, 8 #Length of buffer
-.equ ST_BUFFER, 12
-# actual buffer
-convert_to_upper:
-pushl %ebp
-movl %esp, %ebp
-# ###SET UP VARIABLES###
-movl ST_BUFFER(%ebp), %eax
-movl ST_BUFFER_LEN(%ebp), %ebx
-movl $0, %edi
+    f_toupper_body:
+        movl ST_BUFFER(%ebp), %eax              # SET UP VARIABLES
+        movl ST_BUFFER_LEN(%ebp), %ebx
+        movl $0, %edi
 
-
-# if a buffer with zero length was given
-# to us, just leave
-cmpl $0, %ebx
-je end_convert_loop
+        cmpl $0, %ebx
+        je f_toupper_end                        # if a buffer with zero length was given to us, just leave
 
 
-convert_loop:
-# get the current byte
-movb (%eax,%edi,1), %cl
-# go to the next byte unless it is between
-# 'a' and 'z'
-cmpb $LOWERCASE_A, %cl
-jl next_byte
-cmpb $LOWERCASE_Z, %cl
-jg next_byte
-# otherwise convert the byte to uppercase
-addb $UPPER_CONVERSION, %cl
-# and store it back
-movb %cl, (%eax,%edi,1)
-next_byte:
-incl %edi
-# next byte
-cmpl %edi, %ebx
-# continue unless
-# we've reached the
-# end
-jne convert_loop
-end_convert_loop:
-# no return value, just leave
-movl %ebp, %esp
-popl %ebp
-ret
+        f_toupper_loop:
+            movb (%eax,%edi,1), %cl             # get the current byte
+        
+            cmpb $LOWERCASE_A, %cl              # go to the next byte unless it is between 'a' and 'z'
+            jl next_byte
 
+            cmpb $LOWERCASE_Z, %cl              # go to the next byte unless it is between 'a' and 'z'
+            jg next_byte
+            
+            addb $UPPER_CONVERSION, %cl         # otherwise convert the byte to uppercase            
+            movb %cl, (%eax,%edi,1)             # and store it back
+            
+
+            next_byte:                          # get next byte
+                incl %edi 
+            
+
+            cmpl %edi, %ebx                     # continue unless we've reached the end
+
+
+    f_toupper_end:                              # no return value, just leave function
+        movl %ebp, %esp
+        popl %ebp
+        ret
