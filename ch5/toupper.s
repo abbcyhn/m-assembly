@@ -180,9 +180,8 @@ f_toupper:
 
             next_byte:                              # get next byte
                 incl %edi 
-            
-
-            cmpl %edi, %ebx                         # continue unless we've reached the end
+                cmpl %edi, %ebx                     # continue unless we've reached the end
+                jne f_toupper_loop
 
 
     f_toupper_end:                                  # no return value, just leave function
