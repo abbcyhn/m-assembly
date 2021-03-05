@@ -1,4 +1,4 @@
-SRC := ch4/f_factorial
+SRC := ch5/toupper
 
 all:
 	as --32 $(SRC).s -o $(SRC).o
