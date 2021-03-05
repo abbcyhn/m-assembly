@@ -89,7 +89,7 @@
             int $LINUX_SYSCALL                      # Size of buffer read is returned in %eax
 
             cmpl $END_OF_FILE, %eax                 # EXIT IF WE'VE REACHED THE END check for end of file marker
-            jle read_loop_end                            # if found or on error, go to the end
+            jle read_loop_end                       # if found or on error, go to the end
 
         read_loop_continue:                         # CONVERT THE BLOCK TO UPPER CASE
             pushl $BUFFER_DATA                      # location of buffer
