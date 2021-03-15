@@ -12,6 +12,10 @@
 
 - Write a program that will create a file called heynow.txt and write the words "Hey diddle diddle!" into it.
 
+- Make the program able to either operate on command-line arguments or use STDIN or STDOUT based on the number of command-line arguments specified by ARGC .
+
+- Modify the program so that it checks the results of each system call, and prints out an error message to STDOUT when it occurs.
+
 
 ## Questions:
 - How to read command line argument as integer? [explore_passarg.s](explore_passarg.s)
