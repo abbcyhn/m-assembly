@@ -9,3 +9,7 @@
 - Rewrite the program so that it uses storage in the .bss section rather than the stack to store the file descriptors.
 
 - Write a program that will create a file called heynow.txt and write the words "Hey diddle diddle!" into it.
+
+
+## Questions:
+- How to read command line argument as integer? [explore_passarg.s](explore_passarg.s)
