@@ -16,4 +16,5 @@ all:
 clean:
 	find . -type f -name '*.o' -delete
 	find . -type f -executable -delete
+	find . -type f -name '*.uppercase' -delete
 	clear

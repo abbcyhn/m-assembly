@@ -4,9 +4,9 @@
 
 - How to use stdin: [explore_stdin.s](explore_stdin.s)
 
-- Modify the toupper program so that it reads from STDIN and writes to STDOUT instead of using the files on the command-line.
+- Change the size of the buffer. [toupper.s](toupper.s)
 
-- Change the size of the buffer.
+- Modify the toupper program so that it reads from STDIN and writes to STDOUT instead of using the files on the command-line.
 
 - Rewrite the program so that it uses storage in the .bss section rather than the stack to store the file descriptors. [towrite.s](towrite.s)
 

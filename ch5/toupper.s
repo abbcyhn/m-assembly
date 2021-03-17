@@ -39,7 +39,7 @@
 #           into the output file. This should
 #           never exceed 16,000 for various reasons.
 .section .bss
-    .equ BUFFER_SIZE, 500
+    .equ BUFFER_SIZE, 1000
     .lcomm BUFFER_DATA, BUFFER_SIZE
 
 
