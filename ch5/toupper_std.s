@@ -1,3 +1,7 @@
+# PURPOSE:  This program converts a standart input
+#           to a standart output with all letters
+#           converted to uppercase.
+#
 .data
 	.equ SYS_CLOSE, 6                               # close system call
     .equ SYS_OPEN,  5                               # open system call
