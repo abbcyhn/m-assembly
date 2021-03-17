@@ -14,11 +14,12 @@
     filename:
         .ascii "heynow.txt"
 
-    text_length:
-        .long 18
+    filename_end: .long 0                           # HOW TO HANDLE THIS???
 
     text:
         .ascii "Hey diddle diddle!"
+
+    text_length = .-text
 
 
 .section .bss
@@ -42,7 +43,7 @@
             movl $SYS_WRITE, %eax                       # write syscall
             movl $FILE_DESC_DATA, %ebx                  # file descriptor
             movl $text, %ecx                            # text
-            movl text_length, %edx                      # length of text
+            movl $text_length, %edx                     # length of text
             int $SYS_INT                                # call linux
 
             # close file
