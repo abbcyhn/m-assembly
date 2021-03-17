@@ -1,4 +1,4 @@
-SRC := ch5/toupper
+SRC := ch5/explore_stdin
 
 all:
 	as --32 $(SRC).s -o $(SRC).o
@@ -11,10 +11,13 @@ all:
 
 	#./$(SRC) 
 
-	# echo usd?
+	#echo usd?
 
 clean:
 	find . -type f -name '*.o' -delete
 	find . -type f -executable -delete
 	find . -type f -name '*.uppercase' -delete
 	clear
+
+run:
+	./$(SRC)
