@@ -110,7 +110,7 @@ f_writefile:
     f_writefile_body:
         movl $SYS_WRITE, %eax                       # write syscall
         movl 8(%ebp), %ebx                          # file descriptor
-        movl 12(%ebp), %ecx                         # location to write
+        movl 12(%ebp), %ecx                         # buffer
         movl 16(%ebp), %edx                         # size of buffer
         int $SYS_INT                                # call linux
 

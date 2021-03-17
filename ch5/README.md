@@ -17,6 +17,9 @@
 - Modify the program so that it checks the results of each system call, and prints out an error message to STDOUT when it occurs.
 
 
+## Todo:
+- Fix bug in ch5/lib/prg.s
+
 ## Questions:
 - How to read command line argument as integer? [explore_passarg.s](explore_passarg.s)
-- Fix bug in ch5/lib/prg.s
+- What is difference between %bh & %bl in ch5/explore_stdin.s ?

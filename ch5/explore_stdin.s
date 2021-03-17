@@ -1,53 +1,92 @@
 .data
+	.equ SYS_CLOSE, 6                               # close system call
+    .equ SYS_OPEN,  5                               # open system call
+    .equ SYS_WRITE, 4                               # write system call
+    .equ SYS_READ,  3                               # read system call
+    .equ SYS_INT, 0x80                              # interrupt system call
+
+	.equ FD_STDIN, 0								# file descriptor of standart input 
+	.equ FD_STDOUT, 1								# file descriptor of standart output
+
     msg: .ascii "Insert an input: "
     len =.-msg
 
+.bss
+	.equ BUFFER_SIZE, 500
+	.lcomm BUFFER_DATA, BUFFER_SIZE
 
 .text
+	_start:
+
+		# write to STDOUT
+		movl $SYS_WRITE, %eax							# write syscall
+		movl $FD_STDOUT, %ebx							# file descriptor
+		movl $msg, %ecx									# written text
+		movl $len, %edx									# length of text
+		int $SYS_INT									# call linux
 
 
-MAX_CHAR=30
+		# read from STDIN
+		movl $SYS_READ, %eax 		    				# read syscall
+		movl $FD_STDIN, %ebx		    				# file descriptor
+		movl $BUFFER_DATA, %ecx 	    				# location to read into
+		movl $BUFFER_SIZE, %edx							# size of location
+		int $SYS_INT		        					# call Linux
 
-_start:
+        # find input length
+        pushl $BUFFER_DATA								# input pointer - first argument
+        call f_strlen									# call f_strlen
+        movl %eax, %edi									# set result to edi
 
-	# Start message
-	movl $4, %eax
-	movl $1, %ebx
-	movl $msg, %ecx
-	movl $len, %edx
-	int $0x80
+		# write to STDOUT
+		movl $SYS_WRITE, %eax							# write syscall
+		movl $FD_STDOUT, %ebx							# file descriptor
+		movl $BUFFER_DATA, %ecx							# written text
+		movl %edi, %edx									# length of text
+		int $SYS_INT									# call linux
+		
 
-
-	# READ
-	movl $3, %eax 		    # sys_read (number 3)
-	movl $0, %ebx		    # stdin (number 0)
-	movl %esp, %ecx 	    # starting point
-	movl $MAX_CHAR, %edx	# max input
-	int $0x80		        # call
-
-
-	# Need the cycle to count input length	
-	movl $1, %ecx 		    # counter
-
-end_input:
-	xor %ebx, %ebx
-	movb (%esp), %bl
-	add $1, %esp		    # get next char to compare 
-	add $1, %ecx	 	    # counter+=1
-	cmp $0xa, %ebx		    # compare with "\n" 
-	jne end_input		    # if not, continue 
+	end:
+		movl $0, %ebx
+		movl $1, %eax
+		int $SYS_INT
 
 
-	# WRITE
-	sub %ecx, %esp		    # start from the first input char
-	movl $4, %eax		    # sys_write (number 4)
-	movl $1, %ebx		    # stdout (number 1)
-	movl %ecx, %edx		    # start pointer
-	movl %esp, %ecx		    # length
-	int $0x80		        # call
-	 
+# PURPOSE:  Find length of given string
+#
+# INPUT:
+#           string pointer - first argument
+#
+# OUTPUT:
+#           length of string
+#
+# VARIABLES:
+#           %bl     - holds current character
+#           %eax    - holds string pointer
+#           %ecx    - holds length
+#           %edi    - holds index of current character
+#
+# NOTE:
+#           Last character of string is 0
+#
+.type f_strlen, @function
+f_strlen:
+    f_strlen_start:
+        pushl %ebp
+        movl %esp, %ebp
 
-	# EXIT
-	movl $1, %eax
-	movl $0, %ebx
-	int $0x80	
+    f_strlen_body:
+        movl 8(%ebp), %eax                  # eax = string pointer
+
+		f_strlen_loop:
+			movb (%eax,%edi, 1), %bl		# save current char in bl 
+			incl %edi	 	    			# increment counter
+			cmpb $0, %bl		    		# if we've not reached end of input
+			jne f_strlen_loop		    	# continue
+
+		movl %edi, %eax             		# set length to return value (eax = ecx)
+
+    f_strlen_end:
+        movl %ebp, %esp
+        popl %ebp
+        ret
