@@ -19,4 +19,4 @@
 
 ## Questions:
 - How to read command line argument as integer? [explore_passarg.s](explore_passarg.s)
-- Where are storage locations declared using .long or .byte directives created? (stack/heap or somewhere else?)
+- Fix bug in ch5/lib/prg.s
