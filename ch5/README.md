@@ -6,7 +6,7 @@
 
 - Change the size of the buffer. [toupper.s](toupper.s)
 
-- Modify the toupper program so that it reads from STDIN and writes to STDOUT instead of using the files on the command-line.
+- Modify the toupper program so that it reads from STDIN and writes to STDOUT instead of using the files on the command-line. [toupper_std.s](toupper_std.s)
 
 - Rewrite the program so that it uses storage in the .bss section rather than the stack to store the file descriptors. [towrite.s](towrite.s)
 
