@@ -23,7 +23,8 @@
 - Fix bug in ch5/lib/prg.s
 
 ## Questions:
-- How to read command line argument as integer? [explore_passarg.s](explore_passarg.s)
+- How to read command line argument as integer?
+- How high-level languages use .data və .bss sections?
 - What is difference between %bh & %bl in ch5/explore_stdin.s ?
 - Why I can't access commandline arguments with esp? Look:        
         # movl %esp, %ebp                           # without this gives error 
