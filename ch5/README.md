@@ -16,7 +16,7 @@
 
 - Make the program able to either operate on command-line arguments or use STDIN or STDOUT based on the number of command-line arguments specified by ARGC. [toupper_either.s](toupper_either.s)
 
-- Modify the program so that it checks the results of each system call, and prints out an error message to STDOUT when it occurs.
+- Modify the program so that it checks the results of each system call, and prints out an error message to STDOUT when it occurs. [toupper.s](toupper.s)
 
 
 ## Todo:

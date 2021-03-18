@@ -33,6 +33,11 @@
     .equ LINUX_SYSCALL, 0x80                        # system call interrupt
     .equ END_OF_FILE, 0                             # return value of read which means we've hit the end of the file
 
+    error_msg:
+        .ascii "Error acquired file working with files\n\0"
+
+    error_msg_len =.-error_msg
+
 
 # BUFFER:   This is where the data is loaded into
 #           from the data file and written from
@@ -66,6 +71,9 @@
                 movl $O_RDONLY, %ecx                # read-only flag
                 movl $0666, %edx                    # this doesn't really matter for reading
                 int $LINUX_SYSCALL                  # call Linux
+
+                cmpl $0, %eax                       # chech error
+                jl show_error                       # if acquired go to show_error
 
             store_fd_in:                            # save the given file descriptor
                 movl %eax, ST_FD_IN(%ebp)
@@ -121,7 +129,11 @@
             movl $0, %ebx
             int $LINUX_SYSCALL
 
-
+    show_error:
+        pushl $error_msg_len                                   # length of text    - second argument
+        pushl $error_msg                              # text              - first argument
+        call f_show_error                           # call f_show_error
+        jmp end                                    # go to end
 
 
 # PURPOSE:  This function actually does the
@@ -185,6 +197,32 @@ f_toupper:
 
 
     f_toupper_end:                                  # no return value, just leave function
+        movl %ebp, %esp
+        popl %ebp
+        ret
+
+
+# PURPOSE: Write string to STDOUT
+#
+# INPUT:
+#           text            - first argument
+#           length of text  - second argument
+#
+# OUTPUT:
+#           returns nothing
+f_show_error:
+    f_show_error_start:
+        pushl %ebp
+        movl %esp, %ebp
+
+    f_show_error_body:
+        movl $SYS_WRITE, %eax							# write syscall
+        movl $STDOUT, %ebx							    # file descriptor
+        movl 8(%ebp), %ecx								# written text
+        movl 12(%ebp), %edx								# length of text
+        int $LINUX_SYSCALL							    # call linux
+
+    f_show_error_end:
         movl %ebp, %esp
         popl %ebp
         ret
