@@ -21,7 +21,6 @@
 
 ## Todo:
 - Fix bug in ch5/lib/prg.s
-- Fix bug in ch5/towrite.s
 
 ## Questions:
 - How to read command line argument as integer? [explore_passarg.s](explore_passarg.s)

@@ -12,9 +12,7 @@
     .equ O_CREAT_WRONLY_TRUNC, 03101
 
     filename:
-        .ascii "heynow.txt"
-
-    filename_end: .long 0                           # HOW TO HANDLE THIS???
+        .ascii "heynow.txt\0"
 
     text:
         .ascii "Hey diddle diddle!"
