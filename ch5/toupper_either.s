@@ -37,13 +37,21 @@
     .equ ST_ARGV_2, 12                              # Output file name
 
 	_start:
-        # find operate program
+        movl %esp, %ebp                             # save stack pointer
 
-        # call f_std
+        cmpl $1, ST_ARGC(%ebp)                      # check count of arguments
+        je jump_std                                 # if equals 1 go to jump_std
+        jmp jump_cmd                                # else go to jump_cmd
 
-        call f_cmd
+        jump_std:
+            call f_std                              # call f_std
+            jmp end                                 # go to end
+
+        jump_cmd:
+            pushl ST_ARGV_2(%ebp)                   # output file name  - second argument
+            pushl ST_ARGV_1(%ebp)                   # input file name   - first argument
+            call f_cmd
 		
-
 	end:
 		movl $0, %ebx
 		movl $1, %eax
@@ -119,13 +127,12 @@ f_cmd:
         movl %esp, %ebp
 
     f_cmd_body:
-        movl %esp, %ebp                             # save the stack pointer
         subl $ST_SIZE_RESERVE, %esp                 # allocate space for our file descriptors on the stack
 
         open_files:
             open_fd_in:                             # open input file
                 movl $SYS_OPEN, %eax                # open syscall
-                movl ST_ARGV_1(%ebp), %ebx          # input filename into %ebx
+                movl 8(%ebp), %ebx                  # input filename into %ebx
                 movl $O_RDONLY, %ecx                # read-only flag
                 movl $0666, %edx                    # this doesn't really matter for reading
                 int $SYS_INT                        # call Linux
@@ -135,7 +142,7 @@ f_cmd:
             
             open_fd_out:                            # open output file
                 movl $SYS_OPEN, %eax                # open the file
-                movl ST_ARGV_2(%ebp), %ebx          # output filename into %ebx
+                movl 12(%ebp), %ebx                 # output filename into %ebx
                 movl $O_CREAT_WRONLY_TRUNC, %ecx    # flags for writing to the file
                 movl $0666, %edx                    # mode for new file (if it's created)
                 int $SYS_INT                        # call Linux
