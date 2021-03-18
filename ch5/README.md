@@ -19,9 +19,6 @@
 - Modify the program so that it checks the results of each system call, and prints out an error message to STDOUT when it occurs. [toupper.s](toupper.s)
 
 
-## Todo:
-- Fix bug in ch5/lib/prg.s
-
 ## Questions:
 - How to read command line argument as integer?
 - How high-level languages use .data və .bss sections?
