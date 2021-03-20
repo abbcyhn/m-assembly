@@ -7,3 +7,7 @@
 - Research the lseek system call. Rewrite the add-year program to open the source file for both reading and writing (use $2 for the read/write mode), and write the modified records back to the same file they were read from.
 - Write a program that will add a single record to the file by reading the data from the keyboard. Remember, you will have to make sure that the data has at least one null character at the end, and you need to have a way for the user to indicate they are done typing. Because we have not gotten into characters to numbers conversion, you will not be able to read the age in from the keyboard, so you’ll have to have a default age.
 - Write a function called compare-strings that will compare two strings up to 5 characters. Then write a program that allows the user to enter 5 characters, and have the program return all records whose first name starts with those 5 characters.
+
+
+## Questions:
+- Why we can't display number in stdout? [explore_number.s](explore_number.s)

@@ -1,9 +1,11 @@
-SRC := ch5/explore_stdin
+SRC := ch6/explore_number
 
 all:
 	as --32 $(SRC).s -o $(SRC).o
 
 	ld -m elf_i386 $(SRC).o -o $(SRC)
+
+	# ld  -dynamic-linker /lib/ld-linux.so.2 -o $(SRC) $(SRC).o -lc
 
 	clear
 
