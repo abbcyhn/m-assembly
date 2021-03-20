@@ -31,6 +31,7 @@
 
         .long 45
 
+        .ascii "\n"
 
     record2:
         .ascii "Marilyn\0"
@@ -49,6 +50,8 @@
         .endr
 
         .long 29
+
+        .ascii "\n"
 
 
     record3:
@@ -69,6 +72,7 @@
         
         .long 36
 
+        .ascii "\n"
 
         file_name:                                      # This is the name of the file we will write to
             .ascii "test.dat\0"
