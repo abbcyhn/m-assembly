@@ -3,7 +3,7 @@
 .section .data
     newline:
         .ascii "\n"
-
+    
 
 # PURPOSE:  This function reads a record from the file
 #           descriptor
@@ -54,17 +54,19 @@
             movl %esp, %ebp
 
         write_record_body:
-            pushl %ebx
+
+            # enable appending
+            movl $SYS_LSEEK, %eax
+            movl 12(%ebp), %ebx
+            movl $0, %ecx
+            movl $2, %edx
+            int $LINUX_SYSCALL
 
             movl $SYS_WRITE, %eax
             movl 12(%ebp), %ebx
             movl 8(%ebp), %ecx
             movl $RECORD_SIZE, %edx
-            int $LINUX_SYSCALL
-
-            popl %ebx   # NOTE - %eax has the return value, which we will
-                        # give back to our calling program
-        
+            int $LINUX_SYSCALL        
 
         write_record_end:
             movl %ebp, %esp
