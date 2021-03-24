@@ -1,5 +1,4 @@
 .include "record-def.s"
-.include "record-linux.s"
 
 .section .data
     # Constant data of the records we want to write

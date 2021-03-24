@@ -1,5 +1,4 @@
 .include "record-def.s"
-.include "record-linux.s"
 
 .section .data
     input_file_name:
