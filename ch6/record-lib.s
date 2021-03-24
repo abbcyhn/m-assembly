@@ -1,13 +1,9 @@
 .include "record-def.s"
 
-# STACK LOCAL VARIABLES
 .section .data
-    .equ ST_FILEDES, 12
-    .equ ST_READ_BUFFER, 8
-    .equ ST_WRITE_BUFFER, 8
-    
     newline:
         .ascii "\n"
+
 
 # PURPOSE:  This function reads a record from the file
 #           descriptor
@@ -29,8 +25,8 @@
             pushl %ebx
 
             movl $SYS_READ, %eax
-            movl ST_FILEDES(%ebp), %ebx
-            movl ST_READ_BUFFER(%ebp), %ecx
+            movl 12(%ebp), %ebx
+            movl 8(%ebp), %ecx
             movl $RECORD_SIZE, %edx
             int $LINUX_SYSCALL
 
@@ -62,7 +58,7 @@
 
             movl $SYS_WRITE, %eax
             movl ST_FILEDES(%ebp), %ebx
-            movl ST_WRITE_BUFFER(%ebp), %ecx
+            movl 8(%ebp), %ecx
             movl $RECORD_SIZE, %edx
             int $LINUX_SYSCALL
 
@@ -141,3 +137,26 @@
             movl %ebp, %esp
             popl %ebp
             ret
+
+
+# PURPOSE:  Convert an integer number to a decimal string for display
+#
+# INPUT:
+#           A buffer large enough to hold the largest possible number   - first argument
+#           An integer to convert                                       - second argument
+#
+# OUTPUT: 
+#           The buffer will be overwritten with the decimal string
+#
+# Variables:
+#           %ecx - will hold the count of characters processed
+#           %eax - will hold the current value
+#           %edi - will hold the base (10)
+#
+
+.globl integer2string
+.type integer2string, @function
+integer2string:
+#Normal function beginning
+pushl %ebp
+movl %esp, %ebp
