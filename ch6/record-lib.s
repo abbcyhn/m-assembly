@@ -1,5 +1,5 @@
 .include "record-def.s"
-.include "linux.s"
+.include "record-linux.s"
 
 # STACK LOCAL VARIABLES
 .section .data
