@@ -57,7 +57,7 @@
             pushl %ebx
 
             movl $SYS_WRITE, %eax
-            movl ST_FILEDES(%ebp), %ebx
+            movl 12(%ebp), %ebx
             movl 8(%ebp), %ecx
             movl $RECORD_SIZE, %edx
             int $LINUX_SYSCALL
@@ -120,7 +120,6 @@
     .globl write_newline
     .type write_newline, @function
 
-    .equ ST_FILEDES, 8
     write_newline:
         write_newline_start:
             pushl %ebp
@@ -128,7 +127,7 @@
 
         write_newline_body:
             movl $SYS_WRITE, %eax
-            movl ST_FILEDES(%ebp), %ebx
+            movl 8(%ebp), %ebx
             movl $newline, %ecx
             movl $1, %edx
             int $LINUX_SYSCALL
