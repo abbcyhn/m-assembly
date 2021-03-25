@@ -1,10 +1,14 @@
-SRC := prg
-LIB := prg-lib
+SRC := preload
+LIB := preload-lib
 
 all:
 	as --32 $(SRC).s -o $(SRC).o
 	ld -m elf_i386 $(SRC).o -o $(SRC)
 	clear
+
+# change LD_PRELOAD
+preload:
+	LD_PRELOAD=$PWD/lib$(LIB).so ./$(SRC)
 
 # link with C library
 link:

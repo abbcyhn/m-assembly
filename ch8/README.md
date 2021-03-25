@@ -7,3 +7,5 @@
 - Rewrite the program above so that it also links with the 'c' library. Use the 'c' library's printf function to display the result of the factorial call. [prg.s](prg.s)
 
 - Rewrite the towrite program so that it uses the c library functions for files rather than system calls. [towrite.s](towrite.s)
+
+- Research the use of LD_PRELOAD . What is it used for? Try building a shared library that contained the exit function, and have it write a message to STDERR before exitting. Use LD_PRELOAD and run various programs with it. What are the results? [preload.s](preload.s)
