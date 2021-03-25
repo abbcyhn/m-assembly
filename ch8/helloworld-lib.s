@@ -1,12 +1,20 @@
 .section .data
-    helloworld:
-        .ascii "hello world\n\0"
+    text:
+        .ascii "Hello %s. When you write this program you are %d years old.\n\0"
+
+    person_name:
+        .ascii "Ceyhun\0"
+
+    person_age:
+        .long 25
 
 .section .text
     .globl _start
     _start:
-        push $helloworld
+        pushl person_age
+        pushl $person_name
+        pushl $text
         call printf
 
-        push $0
+        pushl $0
         call exit
