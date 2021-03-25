@@ -8,8 +8,11 @@
     person_age:
         .long 25
 
+    func_arg:
+        .long 4
+
     func_msg:
-        .ascii "This result (%d) is returned from f_returnfive which is located my own lib\n\0"
+        .ascii "This result (%d) is returned from function which is located my own lib\n\0"
 
 .section .text
     .globl _start
@@ -19,7 +22,9 @@
         pushl $person_info
         call printf
 
-        call f_returnfive
+        pushl func_arg
+        call f_factorial
+
         pushl %eax
         pushl $func_msg
         call printf
