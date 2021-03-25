@@ -7,6 +7,7 @@ all:
 	clear
 
 # change LD_PRELOAD
+# note: exec the following command manual
 preload:
 	LD_PRELOAD=$PWD/lib$(LIB).so ./$(SRC)
 
