@@ -1,19 +1,18 @@
-SRC := ch6/explore_number
+SRC := ch8/helloworld-lib
 
 all:
 	as --32 $(SRC).s -o $(SRC).o
 
 	ld -m elf_i386 $(SRC).o -o $(SRC)
 
-	# ld  -dynamic-linker /lib/ld-linux.so.2 -o $(SRC) $(SRC).o -lc
-
 	clear
 
-	#gdb $(SRC)
+link:
+	as --32 $(SRC).s -o $(SRC).o
 
-	#./$(SRC) 
+	ld -m elf_i386 -dynamic-linker /lib/ld-linux.so.2 -o $(SRC) -lc $(SRC).o
 
-	#echo usd?
+	clear
 
 clean:
 	find . -type f -name '*.o' -delete
@@ -24,3 +23,9 @@ clean:
 
 run:
 	./$(SRC)
+
+dbg:	
+	gdb $(SRC)
+
+echo:
+	echo $?
