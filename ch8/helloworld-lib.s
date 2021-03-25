@@ -5,8 +5,8 @@
 .section .text
     .globl _start
     _start:
-        pushl $helloworld
+        push $helloworld
         call printf
 
-        pushl $0
+        push $0
         call exit
