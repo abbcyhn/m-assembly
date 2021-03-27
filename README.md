@@ -8,3 +8,4 @@
 - [Chapter 6. Reading and Writing Simple Records](ch6/)
 - [Chapter 7. Developing Robust Programs](ch7/)
 - [Chapter 8. Sharing Functions with Code Libraries](ch8/)
+- [Chapter 9. Intermediate Memory Topics](ch9/)

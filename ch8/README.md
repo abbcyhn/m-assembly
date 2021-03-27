@@ -1,4 +1,4 @@
-## Chapter 8. haring Functions with Code Libraries: Use the Concepts
+## Chapter 8. Sharing Functions with Code Libraries: Use the Concepts
 
 - Rewrite one or more of the programs from the previous chapters to print their results to the screen using printf rather than returning the result as the exit status code. Also, make the exit status code be 0. [prg.s](prg.s)
 
