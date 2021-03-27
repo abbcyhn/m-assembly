@@ -1,4 +1,4 @@
-SRC := ch8/helloworld-lib
+SRC := ch9/towrite
 
 all:
 	as --32 $(SRC).s -o $(SRC).o

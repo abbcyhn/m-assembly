@@ -118,6 +118,14 @@
             pushl %ebp
             movl %esp, %ebp
 
+            # initialization logic
+            cmpl $0, heap_begin                             # if heap not initialized 
+            je f_allocate_init_call                         # initialize it
+            jmp f_allocate_body                             # else go to f_allocate_body
+
+            f_allocate_init_call:                           # initialize heap
+                call f_allocate_init
+
         f_allocate_body:
             movl 8(%ebp), %ecx                              # %ecx will hold the size we are looking for
             movl heap_begin, %eax                           # %eax will hold the current search location
