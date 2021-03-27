@@ -21,6 +21,10 @@
 #           change at all.
 
 .section .data
+#   #######FOR TESTING########
+    msg: .ascii "THIS IS FROM JEYHUN's OWN ALLOCATOR!\n"
+    len =.-msg
+
 #   #######GLOBAL VARIABLES########
     heap_begin:                     # this points to the beginning of the memory we are managing
         .long 0
@@ -45,20 +49,20 @@
 .section .text
 #   ##########FUNCTIONS############
 #
-#           f_allocate_init
+#           malloc_init
 # PURPOSE:  call this function to initialize the
 #           functions (specifically, this sets heap_begin and
 #           current_break). This has no parameters and no
 #           return value.
 #
-    .globl f_allocate_init
-    .type f_allocate_init, @function
-    f_allocate_init:
-        f_allocate_init_start:
+    .globl malloc_init
+    .type malloc_init, @function
+    malloc_init:
+        malloc_init_start:
             pushl %ebp
             movl %esp, %ebp
 
-        f_allocate_init_body:
+        malloc_init_body:
             # If the brk system call is called with 0 in %ebx, it
             # returns the last valid usable address
             # Find out where the break is:
@@ -77,13 +81,13 @@
                                             # more memory from Linux the
                                             # first time it is run
 
-        f_allocate_init_end:
+        malloc_init_end:
             movl %ebp, %esp
             popl %ebp
             ret
 
 
-#           f_allocate
+#           malloc
 # PURPOSE:      This function is used to grab a section of
 #               memory. It checks to see if there are any
 #               free blocks, and, if not, it asks Linux
@@ -111,38 +115,45 @@
 #               If it does not find a region large enough, it asks
 #               Linux for more memory. In that case, it moves current_break up.
 #
-    .globl f_allocate
-    .type f_allocate, @function
-    f_allocate:
-        f_allocate_start:
+    .globl malloc
+    .type malloc, @function
+    malloc:
+        malloc_start:
             pushl %ebp
             movl %esp, %ebp
 
+            # for TESTING: write to STDOUT
+            movl $4, %eax							        # write syscall
+            movl $1, %ebx							        # file descriptor of standart output
+            movl $msg, %ecx									# written text
+            movl $len, %edx									# length of text
+            int $0x80									    # call linux
+
             # initialization logic
             cmpl $0, heap_begin                             # if heap not initialized 
-            je f_allocate_init_call                         # initialize it
-            jmp f_allocate_body                             # else go to f_allocate_body
+            je malloc_init_call                         # initialize it
+            jmp malloc_body                             # else go to malloc_body
 
-            f_allocate_init_call:                           # initialize heap
-                call f_allocate_init
+            malloc_init_call:                           # initialize heap
+                call malloc_init
 
-        f_allocate_body:
+        malloc_body:
             movl 8(%ebp), %ecx                              # %ecx will hold the size we are looking for
             movl heap_begin, %eax                           # %eax will hold the current search location
             movl current_break, %ebx                        # %ebx will hold the current break
 
-        f_allocate_loop_begin:                              # here we iterate through each memory region
+        malloc_loop_begin:                              # here we iterate through each memory region
             cmpl %ebx, %eax                                 # need more memory if these are equal
-            je f_allocate_move_break
+            je malloc_move_break
 
             movl HDR_SIZE_OFFSET(%eax), %edx                # grab the size of this memory
             cmpl $UNAVAILABLE, HDR_AVAIL_OFFSET(%eax)       # if the space is unavailable, go to the
-            je f_allocate_next_location                     # next one
+            je malloc_next_location                     # next one
 
             cmpl %edx, %ecx                                 # if the space is available, compare
-            jle f_allocate_here                             # the size to the needed size. If its big enough, go to f_allocate_here   
+            jle malloc_here                             # the size to the needed size. If its big enough, go to malloc_here   
 
-        f_allocate_next_location:
+        malloc_next_location:
             addl $HEADER_SIZE, %eax                         # the total size of the memory
             addl %edx, %eax                                 # region is the sum of the size
                                                             # requested (currently stored
@@ -154,9 +165,9 @@
                                                             # to %eax will get the address
                                                             # of the next memory region
             
-            jmp f_allocate_loop_begin                       # go look at the next location
+            jmp malloc_loop_begin                       # go look at the next location
 
-        f_allocate_here:                                    # if we’ve made it here,
+        malloc_here:                                    # if we’ve made it here,
                                                             # that means that the
                                                             # region header of the region
                                                             # to allocate is in %eax
@@ -165,9 +176,9 @@
             addl $HEADER_SIZE, %eax                         # move %eax past the header to
                                                             # the usable memory (since
                                                             # that’s what we return)            
-            jmp f_allocate_end
+            jmp malloc_end
 
-        f_allocate_move_break:                              # if we’ve made it here, that
+        malloc_move_break:                              # if we’ve made it here, that
                                                             # means that we have exhausted
                                                             # all addressable memory, and
                                                             # we need to ask for more.
@@ -198,7 +209,7 @@
                                                             # sets the break, so as long as %eax
                                                             # isn’t 0, we don’t care what it is
             cmpl $0, %eax 
-            je f_allocate_error                             # check for error conditions
+            je malloc_error                             # check for error conditions
 
             popl %ecx                                       # restore saved registers
             popl %ebx
@@ -209,18 +220,18 @@
             addl $HEADER_SIZE, %eax                         # move %eax to the actual start of usable memory. %eax now holds the return value
             
             movl %ebx, current_break                        # save the new break
-            jmp f_allocate_end
+            jmp malloc_end
 
-        f_allocate_error:                                   # on error, we return zero
+        malloc_error:                                   # on error, we return zero
             movl $0, %eax
 
-        f_allocate_end:
+        malloc_end:
             movl %ebp, %esp
             popl %ebp
             ret
 
 
-#           f_deallocate
+#           free
 # PURPOSE:  The purpose of this function is to give back
 #           a region of memory to the pool after we’re done using it.
 #
@@ -239,11 +250,18 @@
 #           8 locations and mark that memory as available,
 #           so that the allocate function knows it can use it.
 #
-    .globl f_deallocate
-    .type f_deallocate, @function
-    f_deallocate:
+    .globl free
+    .type free, @function
+    free:
         # since the function is so simple, we
         # don’t need any of the fancy function stuff
+
+        # for TESTING: write to STDOUT
+        movl $4, %eax							        # write syscall
+        movl $1, %ebx							        # file descriptor of standart output
+        movl $msg, %ecx									# written text
+        movl $len, %edx									# length of text
+        int $0x80									    # call linux
 
         # get the address of the memory to free
         # (normally this is 8(%ebp), but since
@@ -253,3 +271,4 @@
         subl $HEADER_SIZE, %eax                         # get the pointer to the real beginning of the memory
         movl $AVAILABLE, HDR_AVAIL_OFFSET(%eax)         # mark it as available
         ret                                             # return
+

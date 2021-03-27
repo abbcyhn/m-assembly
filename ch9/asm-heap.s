@@ -28,7 +28,7 @@
 
             # allocate heap
             pushl $1                                    # heap size is 1
-            call f_allocate                             # call f_allocate
+            call malloc                                 # call malloc
             movl %eax, file_desc_ptr                    # save pointer in file_desc_ptr
 
             # create/open file
@@ -55,7 +55,7 @@
 
             # deallocate heap
             pushl $file_desc_ptr
-            call f_deallocate
+            call free
 
         end:
             movl $0, %ebx
