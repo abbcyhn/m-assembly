@@ -131,10 +131,10 @@
 
             # initialization logic
             cmpl $0, heap_begin                             # if heap not initialized 
-            je malloc_init_call                         # initialize it
-            jmp malloc_body                             # else go to malloc_body
+            je malloc_init_call                             # initialize it
+            jmp malloc_body                                 # else go to malloc_body
 
-            malloc_init_call:                           # initialize heap
+            malloc_init_call:                               # initialize heap
                 call malloc_init
 
         malloc_body:
@@ -142,16 +142,16 @@
             movl heap_begin, %eax                           # %eax will hold the current search location
             movl current_break, %ebx                        # %ebx will hold the current break
 
-        malloc_loop_begin:                              # here we iterate through each memory region
+        malloc_loop_begin:                                  # here we iterate through each memory region
             cmpl %ebx, %eax                                 # need more memory if these are equal
             je malloc_move_break
 
             movl HDR_SIZE_OFFSET(%eax), %edx                # grab the size of this memory
             cmpl $UNAVAILABLE, HDR_AVAIL_OFFSET(%eax)       # if the space is unavailable, go to the
-            je malloc_next_location                     # next one
+            je malloc_next_location                         # next one
 
             cmpl %edx, %ecx                                 # if the space is available, compare
-            jle malloc_here                             # the size to the needed size. If its big enough, go to malloc_here   
+            jle malloc_here                                 # the size to the needed size. If its big enough, go to malloc_here   
 
         malloc_next_location:
             addl $HEADER_SIZE, %eax                         # the total size of the memory
@@ -165,9 +165,9 @@
                                                             # to %eax will get the address
                                                             # of the next memory region
             
-            jmp malloc_loop_begin                       # go look at the next location
+            jmp malloc_loop_begin                           # go look at the next location
 
-        malloc_here:                                    # if we’ve made it here,
+        malloc_here:                                        # if we’ve made it here,
                                                             # that means that the
                                                             # region header of the region
                                                             # to allocate is in %eax
@@ -178,7 +178,7 @@
                                                             # that’s what we return)            
             jmp malloc_end
 
-        malloc_move_break:                              # if we’ve made it here, that
+        malloc_move_break:                                  # if we’ve made it here, that
                                                             # means that we have exhausted
                                                             # all addressable memory, and
                                                             # we need to ask for more.
@@ -209,7 +209,7 @@
                                                             # sets the break, so as long as %eax
                                                             # isn’t 0, we don’t care what it is
             cmpl $0, %eax 
-            je malloc_error                             # check for error conditions
+            je malloc_error                                 # check for error conditions
 
             popl %ecx                                       # restore saved registers
             popl %ebx
@@ -222,7 +222,7 @@
             movl %ebx, current_break                        # save the new break
             jmp malloc_end
 
-        malloc_error:                                   # on error, we return zero
+        malloc_error:                                       # on error, we return zero
             movl $0, %eax
 
         malloc_end:
