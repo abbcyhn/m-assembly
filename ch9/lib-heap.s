@@ -43,7 +43,7 @@
     .equ UNAVAILABLE, 0             # this is the number we will use to mark space that has been given out
     .equ AVAILABLE, 1               # this is the number we will use to mark space that has been returned, and is available for giving
     .equ SYS_BRK, 45                # break system call
-    .equ LINUX_SYSCALL, 0x80        # make system calls easier to read
+    .equ SYS_INT, 0x80              # interrup system call
 
 
 .section .text
@@ -68,7 +68,7 @@
             # Find out where the break is:
             movl $SYS_BRK, %eax
             movl $0, %ebx
-            int $LINUX_SYSCALL
+            int $SYS_INT
 
             incl %eax                       # %eax now has the last valid address,
                                             # and we want the memory location after that
@@ -187,7 +187,7 @@
                                                             # and %ecx holds its size
 
                                                             # we need to increase %ebx to
-                                                            # where we _want_ memory
+                                                            # where we want memory
                                                             # to end, so we
             addl $HEADER_SIZE, %ebx                         # add space for the headers structure
             addl %ecx, %ebx                                 # add space to the break for the data requested
@@ -198,7 +198,7 @@
             pushl %ecx
 
             movl $SYS_BRK, %eax                             # reset the break (%ebx has the requested break point)
-            int $LINUX_SYSCALL
+            int $SYS_INT
 
                                                             # under normal conditions, this should
                                                             # return the new break in %eax, which
