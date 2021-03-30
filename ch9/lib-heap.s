@@ -22,8 +22,33 @@
 
 .section .data
 #   #######FOR TESTING########
-    msg: .ascii "THIS IS FROM JEYHUN's OWN ALLOCATOR!\n"
-    len =.-msg
+    msg_malloc_int: .ascii "[FUNCTION] malloc_init\n"
+    msg_malloc_int_len =.-msg_malloc_int
+
+    msg_malloc: .ascii "[FUNCTION] malloc\n"
+    msg_malloc_len =.-msg_malloc
+
+    msg_malloc_loop_begin: .ascii "[LABEL] malloc_loop_begin\n"
+    msg_malloc_loop_begin_len =.-msg_malloc_loop_begin
+
+    msg_malloc_next_location: .ascii "[LABEL] malloc_next_location\n"
+    msg_malloc_next_location_len =.-msg_malloc_next_location
+
+    msg_malloc_move_break: .ascii "[LABEL] malloc_move_break\n"
+    msg_malloc_move_break_len =.-msg_malloc_move_break
+
+    msg_malloc_split: .ascii "[FUNCTION] malloc_split\n"
+    msg_malloc_split_len =.-msg_malloc_split
+
+    msg_free: .ascii "[FUNCTION] free\n"
+    msg_free_len =.-msg_free
+
+    msg_less: .ascii "[LABEL] malloc_here_when_less\n"
+    msg_less_len =.-msg_less
+
+    msg_equal: .ascii "[LABEL] malloc_here_when_equal\n"
+    msg_equal_len =.-msg_equal
+
 
 #   #######GLOBAL VARIABLES########
     heap_begin:                     # this points to the beginning of the memory we are managing
@@ -61,6 +86,24 @@
         malloc_init_start:
             pushl %ebp
             movl %esp, %ebp
+
+# WRITE LOG
+# ####################################################################################################################################
+pushl %eax  # save %eax
+pushl %ebx  # save %ebx
+pushl %ecx  # save %ecx
+pushl %edx  # save %edx
+
+pushl $msg_malloc_int_len
+pushl $msg_malloc_int
+call f_write_log
+addl $8, %esp
+
+popl %edx   # restore %edx
+popl %ecx   # restore %ecx
+popl %ebx   # restore %ebx
+popl %eax   # restore %eax
+# ####################################################################################################################################
 
         malloc_init_body:
             # If the brk system call is called with 0 in %ebx, it
@@ -122,12 +165,23 @@
             pushl %ebp
             movl %esp, %ebp
 
-            # for TESTING: write to STDOUT
-            movl $4, %eax							        # write syscall
-            movl $1, %ebx							        # file descriptor of standart output
-            movl $msg, %ecx									# written text
-            movl $len, %edx									# length of text
-            int $0x80									    # call linux
+# WRITE LOG
+# ####################################################################################################################################
+pushl %eax  # save %eax
+pushl %ebx  # save %ebx
+pushl %ecx  # save %ecx
+pushl %edx  # save %edx
+
+pushl $msg_malloc_len
+pushl $msg_malloc
+call f_write_log
+addl $8, %esp
+
+popl %edx   # restore %edx
+popl %ecx   # restore %ecx
+popl %ebx   # restore %ebx
+popl %eax   # restore %eax
+# ####################################################################################################################################
 
             # initialization logic
             cmpl $0, heap_begin                             # if heap not initialized 
@@ -143,6 +197,24 @@
             movl current_break, %ebx                        # %ebx will hold the current break
 
         malloc_loop_begin:                                  # here we iterate through each memory region
+# WRITE LOG
+# ####################################################################################################################################
+pushl %eax  # save %eax
+pushl %ebx  # save %ebx
+pushl %ecx  # save %ecx
+pushl %edx  # save %edx
+
+pushl $msg_malloc_loop_begin_len
+pushl $msg_malloc_loop_begin
+call f_write_log
+addl $8, %esp
+
+popl %edx   # restore %edx
+popl %ecx   # restore %ecx
+popl %ebx   # restore %ebx
+popl %eax   # restore %eax
+# ####################################################################################################################################
+
             cmpl %ebx, %eax                                 # need more memory if these are equal
             je malloc_move_break
 
@@ -151,9 +223,30 @@
             je malloc_next_location                         # next one
 
             cmpl %edx, %ecx                                 # if the space is available, compare
-            jle malloc_here                                 # the size to the needed size. If its big enough, go to malloc_here   
+            jle malloc_here_when_equal                      # the size to the needed size. If its equal, go to malloc_here_when_equal   
+
+#           CURRENTLY NOT WORKING ######################################################################################################
+            # jl malloc_here_when_less                        # If its big enough, go to malloc_here_when_less   
 
         malloc_next_location:
+# WRITE LOG
+# ####################################################################################################################################
+pushl %eax  # save %eax
+pushl %ebx  # save %ebx
+pushl %ecx  # save %ecx
+pushl %edx  # save %edx
+
+pushl $msg_malloc_next_location_len
+pushl $msg_malloc_next_location
+call f_write_log
+addl $8, %esp
+
+popl %edx   # restore %edx
+popl %ecx   # restore %ecx
+popl %ebx   # restore %ebx
+popl %eax   # restore %eax
+# ####################################################################################################################################
+
             addl $HEADER_SIZE, %eax                         # the total size of the memory
             addl %edx, %eax                                 # region is the sum of the size
                                                             # requested (currently stored
@@ -164,18 +257,67 @@
                                                             # region). So, adding %edx and $8
                                                             # to %eax will get the address
                                                             # of the next memory region
-            
+
             jmp malloc_loop_begin                           # go look at the next location
 
-        malloc_here:                                        # if we’ve made it here,
+        malloc_here_when_equal:                             # if we’ve made it here,
                                                             # that means that the
                                                             # region header of the region
                                                             # to allocate is in %eax
+# WRITE LOG
+# ####################################################################################################################################
+pushl %eax  # save %eax
+pushl %ebx  # save %ebx
+pushl %ecx  # save %ecx
+pushl %edx  # save %edx
+
+pushl $msg_equal_len
+pushl $msg_equal
+call f_write_log
+addl $8, %esp
+
+popl %edx   # restore %edx
+popl %ecx   # restore %ecx
+popl %ebx   # restore %ebx
+popl %eax   # restore %eax
+# ####################################################################################################################################
 
             movl $UNAVAILABLE, HDR_AVAIL_OFFSET(%eax)       # mark space as unavailable
             addl $HEADER_SIZE, %eax                         # move %eax past the header to
                                                             # the usable memory (since
                                                             # that’s what we return)            
+            jmp malloc_end
+
+        malloc_here_when_less:
+
+# WRITE LOG
+# ####################################################################################################################################
+pushl %eax  # save %eax
+pushl %ebx  # save %ebx
+pushl %ecx  # save %ecx
+pushl %edx  # save %edx
+
+pushl $msg_less_len
+pushl $msg_less
+call f_write_log
+addl $8, %esp
+
+popl %edx   # restore %edx
+popl %ecx   # restore %ecx
+popl %ebx   # restore %ebx
+popl %eax   # restore %eax
+# ####################################################################################################################################
+
+
+            pushl %ecx                                      # requested size            - second parameter
+            pushl %eax                                      # current region address    - first parameter
+            call malloc_split                               # call malloc_split
+
+            popl %eax
+            popl %ecx
+
+            addl $HEADER_SIZE, %eax
+
             jmp malloc_end
 
         malloc_move_break:                                  # if we’ve made it here, that
@@ -185,6 +327,24 @@
                                                             # %ebx holds the current
                                                             # endpoint of the data,
                                                             # and %ecx holds its size
+
+# WRITE LOG
+# ####################################################################################################################################
+pushl %eax  # save %eax
+pushl %ebx  # save %ebx
+pushl %ecx  # save %ecx
+pushl %edx  # save %edx
+
+pushl $msg_malloc_move_break_len
+pushl $msg_malloc_move_break
+call f_write_log
+addl $8, %esp
+
+popl %edx   # restore %edx
+popl %ecx   # restore %ecx
+popl %ebx   # restore %ebx
+popl %eax   # restore %eax
+# ####################################################################################################################################
 
                                                             # we need to increase %ebx to
                                                             # where we want memory
@@ -231,6 +391,100 @@
             ret
 
 
+
+#           malloc_split
+# PURPOSE:      
+#               This function is used to split region into two parts: requested region and remaining region
+#
+# PARAMETERS:   
+#               current region address  - first parameter
+#               requested region size   - second parameter
+#
+# RETURN VALUE:
+#               returns nothing
+#
+# VARIABLES:
+#               %eax - current region address (= requested region address)
+#               %ebx - requested region size
+#               %ecx - current region size
+#               %edx - remaining region address
+#               %edi - remaining region size
+#
+# PROCESSING:
+#       CURRENT REGION (BEFORE SPLIT):
+#                                   CURRENT REGION
+#           AVALILABLE    SIZE                      USED SECTION
+#             0 _______4_________8__________________________________________________508
+#               |      |         | //////////////////////////////////////////////// |
+#               |   1  |   500   | //////////////////////////////////////////////// |
+#               |      |         | //////////////////////////////////////////////// |
+#               ---------------------------------------------------------------------
+#
+#       IF REQUESTED SIZE IS 200:
+#       CURRENT REGION (AFTER SPLIT):
+#
+#                   REQUESTED REGION            |           REMAINING REGION
+#                                               |
+#           AVALILABLE    SIZE     USED SECTION | AVAILABLE   SIZE     USED SECTION
+#             0 _______4_________8______________208_______4_________8______________508
+#               |      |         | //////////// |         |         | //////////// |
+#               |   0  |   200   | ////208///// |    1    |   292   | ////292///// |
+#               |      |         | //////////// |         |         | //////////// |
+#               --------------------------------------------------------------------
+#
+    .globl malloc_split
+    .type malloc_split, @function
+    malloc_split:
+        malloc_split_start:
+            pushl %ebp
+            movl %esp, %ebp
+
+# WRITE LOG
+# ####################################################################################################################################
+pushl %eax  # save %eax
+pushl %ebx  # save %ebx
+pushl %ecx  # save %ecx
+pushl %edx  # save %edx
+
+pushl $msg_malloc_split_len
+pushl $msg_malloc_split
+call f_write_log
+addl $8, %esp
+
+popl %edx   # restore %edx
+popl %ecx   # restore %ecx
+popl %ebx   # restore %ebx
+popl %eax   # restore %eax
+# ####################################################################################################################################
+
+        malloc_split_body:
+            # get variables
+            movl 8(%ebp), %eax                              # get current region address (current region address = requested region address)
+            movl 12(%ebp), %ebx                             # get requested region size
+            movl HDR_SIZE_OFFSET(%eax), %ecx                # get current region size
+
+            # find remaining region address                 # edx = current region address + requested region size + header size
+            movl %eax, %edx                                 # edx = current region address
+            addl %ebx, %edx                                 # edx += requested region size
+            addl $HEADER_SIZE, %edx                         # edx += header size
+
+            # find remaining region size                    # edi = current region size - requested region size - header size
+            movl %ecx, %edi                                 # edi = current region size
+            subl %edx, %edi                                 # edi -= requested region size
+            subl $HEADER_SIZE, %edi                         # edi -= header size
+
+            # confirm split process
+            movl $UNAVAILABLE, HDR_AVAIL_OFFSET(%eax)       # set current region as unavailable (current region address = requested region address)
+            movl %ebx, HDR_SIZE_OFFSET(%eax)                # set current region size 
+            movl $AVAILABLE, HDR_AVAIL_OFFSET(%edx)         # set remaining region as available
+            movl %edi, HDR_SIZE_OFFSET(%edx)                # set remaining region size 
+
+        malloc_split_end:
+            movl %ebp, %esp
+            popl %ebp
+            ret
+
+
 #           free
 # PURPOSE:  The purpose of this function is to give back
 #           a region of memory to the pool after we’re done using it.
@@ -256,12 +510,23 @@
         # since the function is so simple, we
         # don’t need any of the fancy function stuff
 
-        # for TESTING: write to STDOUT
-        movl $4, %eax							        # write syscall
-        movl $1, %ebx							        # file descriptor of standart output
-        movl $msg, %ecx									# written text
-        movl $len, %edx									# length of text
-        int $0x80									    # call linux
+# WRITE LOG
+# ####################################################################################################################################
+pushl %eax  # save %eax
+pushl %ebx  # save %ebx
+pushl %ecx  # save %ecx
+pushl %edx  # save %edx
+
+pushl $msg_free_len
+pushl $msg_free
+call f_write_log
+addl $8, %esp
+
+popl %edx   # restore %edx
+popl %ecx   # restore %ecx
+popl %ebx   # restore %ebx
+popl %eax   # restore %eax
+# ####################################################################################################################################
 
         # get the address of the memory to free
         # (normally this is 8(%ebp), but since
@@ -272,3 +537,31 @@
         movl $AVAILABLE, HDR_AVAIL_OFFSET(%eax)         # mark it as available
         ret                                             # return
 
+
+# PURPOSE:  Writes buffer to given file
+#
+# INPUT:
+#           address of buffer   - first argument
+#           size of buffer      - second argument
+#
+# OUTPUT:
+#           returns nothing but overwrites buffer
+#
+.globl f_write_log
+.type f_write_log, @function
+f_write_log:
+    f_write_log_start:
+        pushl %ebp
+        movl %esp, %ebp
+
+    f_write_log_body:
+        movl $4, %eax                               # write syscall
+        movl $1, %ebx                               # file descriptor: STDOUT
+        movl 8(%ebp), %ecx                          # buffer
+        movl 12(%ebp), %edx                         # size of buffer
+        int $0x80                                   # call linux
+
+    f_write_log_end:
+        movl %ebp, %esp
+        popl %ebp
+        ret

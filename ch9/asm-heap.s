@@ -1,16 +1,20 @@
 # PURPOSE:  This program creates new file
 #
-
 .section .data
-    .equ SYS_CLOSE, 6                               # close system call
-    .equ SYS_OPEN,  5                               # open system call
-    .equ SYS_WRITE, 4                               # write system call
-    .equ SYS_READ,  3                               # read system call
-    .equ SYS_INT, 0x80                              # interrupt system call
+ #   #######FOR TESTING########
+    msg_newline: .ascii "\n"
+    msg_newline_len =.-msg_newline
 
-    .equ O_RDONLY,  0                               # read/write intensions
-    .equ O_CREAT_WRONLY_TRUNC, 03101
+    msg_size_500: .ascii "[SIZE] 500\n"
+    msg_size_500_len =.-msg_size_500
 
+    msg_size_200: .ascii "[SIZE] 200\n"
+    msg_size_200_len =.-msg_size_200
+
+    msg_size_292: .ascii "[SIZE] 292\n"
+    msg_size_292_len =.-msg_size_292
+
+#   #######GLOBAL VARIABLES########
     filename:
         .ascii "heynow.txt\0"
 
@@ -25,39 +29,124 @@
 .section .text
     .globl _start
         _start:
+# WRITE LOG: SIZE 500
+# ####################################################################################################################################
+pushl %eax  # save %eax
+pushl %ebx  # save %ebx
+pushl %ecx  # save %ecx
+pushl %edx  # save %edx
+
+pushl $msg_size_500_len
+pushl $msg_size_500
+call f_write_log
+addl $8, %esp
+
+popl %edx   # restore %edx
+popl %ecx   # restore %ecx
+popl %ebx   # restore %ebx
+popl %eax   # restore %eax
+# ####################################################################################################################################
 
             # allocate heap
-            pushl $1                                    # heap size is 1
+            pushl $500                                  # heap size is 1
             call malloc                                 # call malloc
             movl %eax, file_desc_ptr                    # save pointer in file_desc_ptr
 
-            # create/open file
-            movl $SYS_OPEN, %eax                        # open syscall
-            movl $filename, %ebx                        # filename into %ebx
-            movl $O_CREAT_WRONLY_TRUNC, %ecx            # write mode
-            movl $0666, %edx                            # mode for new file (if it's created)
-            int $SYS_INT                                # call linux
+            # deallocate heap
+            pushl file_desc_ptr
+            call free
 
-            # save file descriptor
-            movl %eax, (file_desc_ptr)                  # save file descriptor into file_desc_ptr buffer
+# WRITE LOG: newline
+# ####################################################################################################################################
+pushl %eax  # save %eax
+pushl %ebx  # save %ebx
+pushl %ecx  # save %ecx
+pushl %edx  # save %edx
 
-            # write text to file            
-            movl $SYS_WRITE, %eax                       # write syscall
-            movl file_desc_ptr, %ebx                    # file descriptor
-            movl $text, %ecx                            # text
-            movl $text_length, %edx                     # length of text
-            int $SYS_INT                                # call linux
+pushl $msg_newline_len
+pushl $msg_newline
+call f_write_log
+addl $8, %esp
 
-            # close file
-            movl $SYS_WRITE, %eax                      # close syscall
-            movl $file_desc_ptr, %ebx                  # file descriptor
-            int $SYS_INT                               # call linux
+popl %edx   # restore %edx
+popl %ecx   # restore %ecx
+popl %ebx   # restore %ebx
+popl %eax   # restore %eax
+# ####################################################################################################################################
+
+# WRITE LOG: SIZE 200
+# ####################################################################################################################################
+pushl %eax  # save %eax
+pushl %ebx  # save %ebx
+pushl %ecx  # save %ecx
+pushl %edx  # save %edx
+
+pushl $msg_size_200_len
+pushl $msg_size_200
+call f_write_log
+addl $8, %esp
+
+popl %edx   # restore %edx
+popl %ecx   # restore %ecx
+popl %ebx   # restore %ebx
+popl %eax   # restore %eax
+# ####################################################################################################################################
+
+            # allocate heap
+            pushl $200                                  # heap size is 1
+            call malloc                                 # call malloc
+            movl %eax, (file_desc_ptr)                  # save pointer in file_desc_ptr
 
             # deallocate heap
-            pushl $file_desc_ptr
+            pushl file_desc_ptr
+            call free
+
+# WRITE LOG: newline
+# ####################################################################################################################################
+pushl %eax  # save %eax
+pushl %ebx  # save %ebx
+pushl %ecx  # save %ecx
+pushl %edx  # save %edx
+
+pushl $msg_newline_len
+pushl $msg_newline
+call f_write_log
+addl $8, %esp
+
+popl %edx   # restore %edx
+popl %ecx   # restore %ecx
+popl %ebx   # restore %ebx
+popl %eax   # restore %eax
+# ####################################################################################################################################
+
+# WRITE LOG: SIZE 292
+# ####################################################################################################################################
+pushl %eax  # save %eax
+pushl %ebx  # save %ebx
+pushl %ecx  # save %ecx
+pushl %edx  # save %edx
+
+pushl $msg_size_292_len
+pushl $msg_size_292
+call f_write_log
+addl $8, %esp
+
+popl %edx   # restore %edx
+popl %ecx   # restore %ecx
+popl %ebx   # restore %ebx
+popl %eax   # restore %eax
+# ####################################################################################################################################
+
+            # allocate heap
+            pushl $292                                  # heap size is 1
+            call malloc                                 # call malloc
+            movl %eax, (file_desc_ptr)                  # save pointer in file_desc_ptr
+
+            # deallocate heap
+            pushl file_desc_ptr
             call free
 
         end:
             movl $0, %ebx
             movl $1, %eax
-            int $SYS_INT
+            int $0x80
